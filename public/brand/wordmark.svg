@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 216 36">
+  <!-- VentureCoach AI wordmark. Text uses currentColor so the lockup works on
+       dark and light backgrounds alike; drop it on any surface with an
+       appropriate text color (e.g. #eef0f6 on dark, #14161d on light). -->
+  <defs>
+    <linearGradient id="vcw-g" x1="42" y1="8" x2="212" y2="30" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7c7ff8"/>
+      <stop offset=".55" stop-color="#4a4ee0"/>
+      <stop offset="1" stop-color="#2b2e7a"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="32" height="32" rx="9" fill="url(#vcw-g)"/>
+  <path d="M11 21 C11 12 24 12 24 18.5 C24 23 15.5 23.5 15.5 19 C15.5 15.8 21 15.8 21 18.6" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="24.5" cy="9.5" r="2.1" fill="#34d399"/>
+  <text x="44" y="23.5" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="17" font-weight="600" letter-spacing="-0.3" fill="currentColor">VentureCoach <tspan font-weight="700" fill="url(#vcw-g)">AI</tspan></text>
+</svg>

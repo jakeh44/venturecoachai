@@ -1,0 +1,300 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   VentureCoach AI — Design System
+   Dark-first. The <html> element carries class="dark" by default; removing
+   it (or setting data-theme) flips every semantic token to light mode.
+   Layers:
+     @theme            → static scales (brand, accent, ink, type, radii, shadows)
+     :root / .dark     → semantic tokens (canvas, surface, line, fg…)
+     @theme inline     → exposes semantic tokens as Tailwind utilities
+     @layer components → primitives the whole app reuses (.btn, .card, .input…)
+   ========================================================================== */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* ---- Type families ---------------------------------------------------- */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Space Grotesk", var(--font-sans);
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* ---- Brand scale — "Signal Indigo": decision, intelligence, focus ----- */
+  --color-brand-50: #eef0ff;
+  --color-brand-100: #e0e3ff;
+  --color-brand-200: #c5caff;
+  --color-brand-300: #a1a8fd;
+  --color-brand-400: #7c7ff8;
+  --color-brand-500: #5e62f4;
+  --color-brand-600: #4a4ee0;
+  --color-brand-700: #3c3dc2;
+  --color-brand-800: #31339c;
+  --color-brand-900: #2b2e7a;
+  --color-brand-950: #1a1b45;
+
+  /* ---- Accent scale — "Validated Emerald": metric shipped, proof -------- */
+  --color-accent-50: #ecfdf5;
+  --color-accent-100: #d1fae5;
+  --color-accent-200: #a7f3d0;
+  --color-accent-300: #6ee7b7;
+  --color-accent-400: #34d399;
+  --color-accent-500: #10b981;
+  --color-accent-600: #059669;
+  --color-accent-700: #047857;
+  --color-accent-800: #065f46;
+  --color-accent-900: #064e3b;
+
+  /* ---- Ink neutrals — blue-tinted graphite, never pure gray ------------- */
+  --color-ink-50: #f7f8fb;
+  --color-ink-100: #eef0f5;
+  --color-ink-200: #d9dde8;
+  --color-ink-300: #b7bece;
+  --color-ink-400: #8891a8;
+  --color-ink-500: #5b6479;
+  --color-ink-600: #454d61;
+  --color-ink-700: #333a4c;
+  --color-ink-800: #232838;
+  --color-ink-900: #161a26;
+  --color-ink-950: #0a0c12;
+
+  /* ---- Functional (map to Tailwind amber/rose/cyan in usage) ------------ */
+  --color-warn: #f59e0b; /* experiment running / caution        */
+  --color-risk: #f43f5e; /* critical metric / churn             */
+  --color-insight: #22d3ee; /* insight / analyzer output        */
+
+  /* ---- Radii — a touch softer than Tailwind defaults -------------------- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 26px;
+
+  /* ---- Shadows ----------------------------------------------------------- */
+  --shadow-card: 0 1px 2px rgb(6 8 14 / 0.20), 0 12px 32px -20px rgb(6 8 14 / 0.45);
+  --shadow-pop: 0 2px 4px rgb(6 8 14 / 0.18), 0 20px 48px -24px rgb(6 8 14 / 0.55);
+  --shadow-glow: 0 0 48px -10px rgb(94 98 244 / 0.55);
+  --shadow-btn-primary: inset 0 1px 0 0 rgb(255 255 255 / 0.18), 0 10px 24px -12px rgb(94 98 244 / 0.65);
+
+  /* ---- Motion ------------------------------------------------------------ */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-rise: rise 0.7s var(--ease-out-expo) both;
+  --animate-loop-dot: loop-travel 4.5s linear infinite;
+  --animate-pulse-soft: pulse-soft 2.6s ease-in-out infinite;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes loop-travel {
+    from {
+      left: 0%;
+    }
+    to {
+      left: 100%;
+    }
+  }
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+}
+
+/* ---- Semantic tokens (flip with theme) ----------------------------------- */
+:root {
+  --vc-canvas: #f7f8fb; /* page background            */
+  --vc-surface: #ffffff; /* cards, nav                 */
+  --vc-raised: #ffffff; /* hover/raised surface       */
+  --vc-sunken: #eff1f6; /* inset wells, code blocks   */
+  --vc-line: rgb(16 20 32 / 0.09);
+  --vc-line-strong: rgb(16 20 32 / 0.18);
+  --vc-fg: #14161d;
+  --vc-fg-muted: #525a6b;
+  /* fg-faint is caption/meta text at 10–13px, so it must clear WCAG AA (4.5:1)
+     against both canvas and surface — it was 2.9:1. Placeholders keep their own
+     lighter token so empty inputs don't read as filled. */
+  --vc-fg-faint: #6a7282;
+  --vc-fg-placeholder: #7c8497;
+  --vc-halo: rgb(94 98 244 / 0.10); /* brand wash behind glows */
+  --vc-gridline: rgb(16 20 32 / 0.055);
+  color-scheme: light;
+}
+
+.dark {
+  --vc-canvas: #0a0c12;
+  --vc-surface: #10131c;
+  --vc-raised: #171b27;
+  --vc-sunken: #0d1018;
+  --vc-line: rgb(255 255 255 / 0.08);
+  --vc-line-strong: rgb(255 255 255 / 0.17);
+  --vc-fg: #eef0f6;
+  --vc-fg-muted: #9aa3b8;
+  --vc-fg-faint: #7d879e;
+  --vc-fg-placeholder: #6e7891;
+  --vc-halo: rgb(94 98 244 / 0.17);
+  --vc-gridline: rgb(255 255 255 / 0.045);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-canvas: var(--vc-canvas);
+  --color-surface: var(--vc-surface);
+  --color-raised: var(--vc-raised);
+  --color-sunken: var(--vc-sunken);
+  --color-line: var(--vc-line);
+  --color-line-strong: var(--vc-line-strong);
+  --color-fg: var(--vc-fg);
+  --color-fg-muted: var(--vc-fg-muted);
+  --color-fg-faint: var(--vc-fg-faint);
+  --color-fg-placeholder: var(--vc-fg-placeholder);
+  --color-halo: var(--vc-halo);
+  --color-gridline: var(--vc-gridline);
+}
+
+/* ---- Base ----------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-fg antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "cv05" 1, "ss01" 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-brand-500) 32%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
+
+  /* Quiet scrollbars that match the theme */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--vc-line-strong) transparent;
+  }
+  /* Anchor jumps (nav → #pricing etc.) clear the sticky nav instead of hiding
+     the section eyebrow underneath it. */
+  section[id],
+  [id]:target {
+    scroll-margin-top: 5.5rem;
+  }
+}
+
+/* ---- Component primitives (engineer: reuse these, don't restyle ad hoc) --- */
+@layer components {
+  /* Layout */
+  .container-site {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+  .section {
+    @apply py-20 sm:py-28;
+  }
+  .eyebrow {
+    @apply font-mono text-[11px] font-medium tracking-[0.18em] uppercase text-brand-600 dark:text-brand-400;
+  }
+
+  /* Buttons — pair: .btn + one variant + optional size */
+  .btn {
+    @apply inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-md px-4 text-sm font-semibold whitespace-nowrap transition-all duration-150 select-none active:translate-y-px;
+  }
+  .btn-primary {
+    @apply bg-brand-600 text-white shadow-btn-primary hover:bg-brand-500;
+  }
+  .btn-secondary {
+    @apply border border-line-strong bg-surface text-fg hover:bg-raised;
+  }
+  .btn-ghost {
+    @apply text-fg-muted hover:bg-raised hover:text-fg;
+  }
+  .btn-sm {
+    @apply h-8 rounded-sm px-3 text-[13px];
+  }
+  .btn-lg {
+    @apply h-12 rounded-md px-6 text-[15px];
+  }
+
+  /* Inputs */
+  .input {
+    @apply h-10 w-full rounded-md border border-line-strong bg-surface px-3 text-sm text-fg placeholder:text-fg-placeholder focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/25;
+  }
+  .label {
+    @apply mb-1.5 block text-[13px] font-medium text-fg-muted;
+  }
+  /* Multiline inputs: `.input`'s fixed h-10 is for single-line controls only.
+     Textareas get auto height (pair with a min-h-* utility) plus real vertical
+     padding and relaxed leading — without this the first line sits flush
+     against the top border. Applies to every textarea.input in the app. */
+  textarea.input {
+    @apply h-auto py-2.5 leading-relaxed;
+  }
+
+  /* Surfaces */
+  .card {
+    @apply rounded-lg border border-line bg-surface shadow-card;
+  }
+  .card-hover {
+    @apply transition-all duration-200 hover:-translate-y-0.5 hover:border-line-strong hover:shadow-pop;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-raised px-2.5 py-1 text-xs font-medium text-fg-muted;
+  }
+  .nav-glass {
+    @apply border-b border-line bg-canvas/75 backdrop-blur-xl;
+  }
+  /* Loading placeholder for awaited server data (router pending states). */
+  .skeleton {
+    @apply animate-pulse-soft rounded-md bg-sunken;
+  }
+
+  /* Decorative helpers */
+  .text-gradient {
+    background: linear-gradient(100deg, var(--color-brand-400), var(--color-brand-600) 55%, var(--color-insight));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, var(--vc-gridline) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--vc-gridline) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .hairline-t {
+    @apply border-t border-line;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
